@@ -12,7 +12,7 @@ export const datasourceProvider = [
             password: "tec@web",
             database: "tecweb",
             entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-            synchronize: false
+            synchronize: true
         });
         return datasource.initialize();
     }

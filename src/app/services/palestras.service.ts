@@ -15,9 +15,7 @@ export class PalestrasService {
     }
 
     async getPalestra(id: number): Promise<Palestra> {
-        return this.palestraRepository.findOne({
-            where: {id}
-        });
+        return this.palestraRepository.findOneBy({id});
     }
 
     createPalestras(palestra: Palestra): Promise<Palestra> {

@@ -1,6 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
-import { PalestrasService } from "../services/palestras.service";
-import { Palestra } from "../domain/palestra.entity";
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { PalestrasService } from '../services/palestras.service';
+import { Palestra } from '../domain/palestra.entity';
 
 @Controller('/palestras')
 export class PalestraController {
@@ -16,28 +16,25 @@ export class PalestraController {
 
     @Get(':id')
     getPalestra(@Param('id') id: string): Promise<Palestra> {
-        const palestraId = parseInt(id)
-        return this.palestrasService.getPalestra(palestraId);
+        return this.palestrasService.getPalestra(Number(id));
     }
 
     @Post()
-    createPalestras(@Body() palestra: Palestra): Promise<Palestra> {
+    createPalestra(@Body() palestra: Palestra): Promise<Palestra> {
         return this.palestrasService.createPalestras(palestra);
     }
 
     @Put(':id')
-    updatePalestras(@Param('id') id: string, 
+    updatePalestra(@Param('id') id: string, 
     @Body() palestra: any): Promise<Palestra> {
-        const palestraId = parseInt(id);
         return this.palestrasService.updatePalestras(
-            palestraId,
+            Number(id),
             palestra
         );
     }
 
     @Delete(':id')
-    deletePalestras(@Param('id') id: string): Promise<void> {
-        const palestraId = parseInt(id);
-        return this.palestrasService.deletePalestra(palestraId);
+    deletePalestra(@Param('id') id: string): Promise<void> {
+        return this.palestrasService.deletePalestra(Number(id));
     }
 }
