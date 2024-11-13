@@ -1,37 +1,39 @@
-import { Injectable } from "@nestjs/common";
-import { PalestrasRepository } from "../repositories/palestras.repository";
+import { Inject, Injectable } from "@nestjs/common";
 import { Palestra } from "../domain/palestra.entity";
+import { DeleteResult, Repository } from "typeorm";
 
 @Injectable()
 export class PalestrasService {
 
     constructor(
-        private readonly palestraRepository: PalestrasRepository
+        @Inject("PALESTRA_REPOSITORY")
+        private readonly palestraRepository: Repository<Palestra>
     ) {}
 
-    getPalestras(): Palestra[] {
-        return this.palestraRepository.getAll();
+    async getPalestras(): Promise<Palestra[]> {
+        return this.palestraRepository.find();
     }
 
-    getPalestra(id: number): Palestra {
-        return this.palestraRepository.getById(id);
+    async getPalestra(id: number): Promise<Palestra> {
+        return this.palestraRepository.findOne({
+            where: {id}
+        });
     }
 
-    createPalestras(palestra: Palestra): Palestra {
+    createPalestras(palestra: Palestra): Promise<Palestra> {
         return this.palestraRepository.save(palestra);
     }
 
-    updatePalestras(id: number, palestra: Palestra): Palestra {
-        const exPalestra = this.palestraRepository.getById(id);
+    async updatePalestras(id: number, palestra: Palestra): Promise<Palestra> {
+        const exPalestra = await this.getPalestra(id);
         exPalestra.titulo = palestra.titulo;
-        exPalestra.descricao = palestra.descricao;
-        exPalestra.palestrante = palestra.palestrante
+        exPalestra.palestrante = palestra.palestrante;
         exPalestra.dataHora = palestra.dataHora;
+        exPalestra.descricao = palestra.descricao;
         return this.palestraRepository.save(exPalestra);
     }
 
-    deletePalestras(id: number): void {
-        this.palestraRepository.delete(id);
-        return;
+    async deletePalestra(id: number): Promise<void> {
+        await this.palestraRepository.delete(id);
     }
 }
