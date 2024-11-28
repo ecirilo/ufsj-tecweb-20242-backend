@@ -3,8 +3,7 @@ import { Presenca } from './presenca.entity';
 
 @Entity('aluno')
 export class Aluno {
-  
-  @PrimaryGeneratedColumn({ name: "aluno_id"} )
+  @PrimaryGeneratedColumn({ name: 'aluno_id' })
   id: number;
 
   @Column()

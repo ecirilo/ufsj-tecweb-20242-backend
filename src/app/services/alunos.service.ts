@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Aluno } from '../domain/aluno.entity';
 
@@ -10,20 +10,24 @@ export class AlunoService {
   ) {}
 
   async getAll(): Promise<Aluno[]> {
+    Logger.log('Buscando todos os alunos');
     return this.repository.find();
   }
 
   async get(id: number): Promise<Aluno> {
+    Logger.log(`Buscando aluno por id: ${id}`);
     return this.repository.findOneBy({ id });
   }
 
   async create(aluno: Aluno): Promise<Aluno> {
+    Logger.log(`Criando aluno: ${aluno}`);
     return this.repository.save(aluno);
   }
 
   async update(id: number, aluno: Aluno): Promise<Aluno> {
+    Logger.log(`Atualizando aluno: ${aluno}`);
     const existingAluno = await this.repository.findOneBy({
-      id
+      id,
     });
     existingAluno.nome = aluno.nome;
     existingAluno.matricula = aluno.matricula;
@@ -31,6 +35,7 @@ export class AlunoService {
   }
 
   async delete(id: number): Promise<void> {
-    this.repository.delete({ id });
+    Logger.log(`Deletando aluno por id: ${id}`);
+    await this.repository.delete({ id });
   }
 }

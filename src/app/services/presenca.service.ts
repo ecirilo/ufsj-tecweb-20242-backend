@@ -5,7 +5,6 @@ import { Aluno } from '../domain/aluno.entity';
 
 @Injectable()
 export class PresencaService {
-
   constructor(
     @Inject('PRESENCA_REPOSITORY')
     private readonly repository: Repository<Presenca>,
@@ -20,6 +19,6 @@ export class PresencaService {
       where: { palestra: { id } },
       relations: ['aluno'],
     });
-    return presencas.map(presenca => presenca.aluno);
+    return presencas.map((_presenca: Presenca): Aluno => _presenca.aluno);
   }
 }

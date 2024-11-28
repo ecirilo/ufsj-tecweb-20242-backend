@@ -4,8 +4,7 @@ import { Aluno } from './aluno.entity';
 
 @Entity('presenca')
 export class Presenca {
-  
-  @PrimaryGeneratedColumn({ name: 'presenca_id'})
+  @PrimaryGeneratedColumn({ name: 'presenca_id' })
   id: number;
 
   @ManyToOne(() => Aluno, (aluno: Aluno) => aluno.presencas, {
