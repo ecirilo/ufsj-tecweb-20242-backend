@@ -10,7 +10,7 @@ import {
 import { AlunoService } from '../services/alunos.service';
 import { Aluno } from '../domain/aluno.entity';
 
-@Controller('/alunos')
+@Controller('/api/alunos')
 export class AlunoController {
   constructor(private readonly alunoService: AlunoService) {}
 

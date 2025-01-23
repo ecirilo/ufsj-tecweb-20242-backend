@@ -6,22 +6,23 @@ import {
   Param,
   Post,
   Put,
-  UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 import { PalestrasService } from '../services/palestras.service';
 import { Palestra } from '../domain/palestra.entity';
-import { CacheInterceptor } from '@nestjs/cache-manager';
+import { AuthGuard } from '@nestjs/passport';
 
-@Controller('/palestras')
-@UseInterceptors(CacheInterceptor)
+@Controller('/api/palestras')
 export class PalestraController {
   constructor(private readonly palestrasService: PalestrasService) {}
 
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   getPalestras(): Promise<Palestra[]> {
     return this.palestrasService.getPalestras();
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get(':id')
   getPalestra(@Param('id') id: string): Promise<Palestra> {
     return this.palestrasService.getPalestra(Number(id));

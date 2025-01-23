@@ -6,41 +6,35 @@ import { AlunoController } from './app/controllers/alunos.controller';
 import { PresencaController } from './app/controllers/presenca.controller';
 import { AlunoService } from './app/services/alunos.service';
 import { PresencaService } from './app/services/presenca.service';
-import {
-  CacheInterceptor,
-  CacheModule,
-  CacheStore,
-} from '@nestjs/cache-manager';
-import { APP_INTERCEPTOR } from '@nestjs/core';
-import { RedisStore, redisStore } from 'cache-manager-redis-yet';
+import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './app/auth/strategy';
+import { LoginController } from './app/controllers/login.controller';
+import { AuthService } from './app/services/auth.service';
 
 @Module({
   imports: [
     DatabaseModule,
-    CacheModule.registerAsync({
-      useFactory: async (): Promise<{ store: CacheStore }> => {
-        const store: RedisStore<any> = await redisStore({
-          socket: {
-            host: 'localhost',
-            port: 6380,
-          },
-        });
-
-        return {
-          store: store as unknown as CacheStore,
-        };
-      },
+    PassportModule.register({
+      defaultStrategy: 'jwt',
+    }),
+    JwtModule.register({
+      secret: 'tecwebSegredo',
+      signOptions: { expiresIn: '2m' },
     }),
   ],
-  controllers: [PalestraController, AlunoController, PresencaController],
+  controllers: [
+    PalestraController,
+    AlunoController,
+    PresencaController,
+    LoginController,
+  ],
   providers: [
     PalestrasService,
     AlunoService,
     PresencaService,
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: CacheInterceptor,
-    },
+    AuthService,
+    JwtStrategy,
   ],
 })
 export class AppModule {}

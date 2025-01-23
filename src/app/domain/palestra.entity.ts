@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Presenca } from './presenca.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsDate, IsNotEmpty, IsNumber } from 'class-validator';
 
 @Entity('palestras')
 export class Palestra {
@@ -17,6 +18,7 @@ export class Palestra {
     type: 'string',
     description: 'Título da palestra',
   })
+  @IsNotEmpty()
   @Column({
     name: 'titulo',
     type: 'varchar',
@@ -29,6 +31,7 @@ export class Palestra {
     type: 'string',
     description: 'Palestrante da palestra',
   })
+  @IsNotEmpty()
   @Column({
     name: 'palestrante',
     type: 'varchar',
@@ -44,6 +47,7 @@ export class Palestra {
   @Column({
     name: 'data_hora',
     type: 'datetime',
+    nullable: true,
   })
   dataHora: Date;
 
@@ -52,9 +56,11 @@ export class Palestra {
     type: 'string',
     description: 'Descrição da palestra',
   })
+  @IsNotEmpty()
   @Column({
     name: 'descricao',
     type: 'text',
+    nullable: true,
   })
   descricao: string;
 

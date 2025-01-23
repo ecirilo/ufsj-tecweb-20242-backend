@@ -25,7 +25,7 @@ export class AlunoService {
   }
 
   async update(id: number, aluno: Aluno): Promise<Aluno> {
-    Logger.log(`Atualizando aluno: ${aluno}`);
+    Logger.log(`Atualizando aluno: ${id} - ${JSON.stringify(aluno)}`);
     const existingAluno = await this.repository.findOneBy({
       id,
     });
