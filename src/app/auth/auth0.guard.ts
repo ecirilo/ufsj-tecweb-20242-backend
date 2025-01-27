@@ -6,10 +6,6 @@ export class Auth0Guard extends AuthGuard('oauth2') {
   async canActivate(context: ExecutionContext): Promise<any> {
     const request = context.switchToHttp().getRequest();
 
-    console.log("Session ============");
-    console.log(request.session);
-    console.log("============");
-
     if (request.session.user) {
       request.user = request.session.user;
       return true;
