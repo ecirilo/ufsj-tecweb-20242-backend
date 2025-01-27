@@ -10,19 +10,18 @@ import {
 } from '@nestjs/common';
 import { PalestrasService } from '../services/palestras.service';
 import { Palestra } from '../domain/palestra.entity';
-import { AuthGuard } from '@nestjs/passport';
+import { Auth0Guard } from '../auth/auth0.guard';
 
 @Controller('/api/palestras')
+@UseGuards(Auth0Guard)
 export class PalestraController {
   constructor(private readonly palestrasService: PalestrasService) {}
 
-  @UseGuards(AuthGuard('jwt'))
   @Get()
   getPalestras(): Promise<Palestra[]> {
     return this.palestrasService.getPalestras();
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Get(':id')
   getPalestra(@Param('id') id: string): Promise<Palestra> {
     return this.palestrasService.getPalestra(Number(id));

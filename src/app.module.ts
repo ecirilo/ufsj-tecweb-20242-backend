@@ -6,21 +6,21 @@ import { AlunoController } from './app/controllers/alunos.controller';
 import { PresencaController } from './app/controllers/presenca.controller';
 import { AlunoService } from './app/services/alunos.service';
 import { PresencaService } from './app/services/presenca.service';
+import { LoginController } from './app/controllers/login.controller';
+import { Auth0Strategy } from './app/auth/auth0.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtStrategy } from './app/auth/strategy';
-import { LoginController } from './app/controllers/login.controller';
-import { AuthService } from './app/services/auth.service';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
     DatabaseModule,
-    PassportModule.register({
-      defaultStrategy: 'jwt',
-    }),
+    HttpModule,
+    PassportModule.register({ session: true }),
     JwtModule.register({
-      secret: 'tecwebSegredo',
-      signOptions: { expiresIn: '2m' },
+      global: true,
+      secret: 'tecwebSecret',
+      signOptions: { expiresIn: '5d' },
     }),
   ],
   controllers: [
@@ -29,12 +29,6 @@ import { AuthService } from './app/services/auth.service';
     PresencaController,
     LoginController,
   ],
-  providers: [
-    PalestrasService,
-    AlunoService,
-    PresencaService,
-    AuthService,
-    JwtStrategy,
-  ],
+  providers: [PalestrasService, AlunoService, PresencaService, Auth0Strategy],
 })
 export class AppModule {}

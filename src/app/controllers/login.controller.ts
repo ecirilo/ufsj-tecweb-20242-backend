@@ -1,18 +1,49 @@
-import { Body, Controller, Post, UnauthorizedException } from '@nestjs/common';
-import { AuthService } from '../services/auth.service';
+import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Auth0Guard } from '../auth/auth0.guard';
 
-@Controller('/api/login')
+@Controller('')
 export class LoginController {
-  constructor(private readonly authService: AuthService) {}
+  @UseGuards(Auth0Guard)
+  @Get('/login/oauth2/code/oidc')
+  redirect(@Req() req: any, @Res() res: any): any {
+    res.session = req.session;
+    res.session.user = req.user;
+    res.session.idToken = req.idToken;
 
-  @Post()
-  async login(@Body() login: any): Promise<any> {
-    const user = await this.authService.validate(login.nome, login.senha);
+    return res.redirect('http://localhost:4200/');
+  }
 
-    if (!user) {
-      throw new UnauthorizedException();
+  @Get('/oauth2/authorization/oidc')
+  @UseGuards(Auth0Guard)
+  loginAuth0(): void {
+    return;
+  }
+
+  //https://dev-3pna8x3yxt3xtnvr.us.auth0.com/v2/logout?client_id=VKA5ADg8t1ah1wENlpEr8iTVqzXFIzcn&redirectTo=http://localhost:4200
+  @Post('/api/logout')
+  logoutAuth0(@Req() req: any): any {
+    let idTokenFromSession;
+    if (req.session && req.session.user) {
+      idTokenFromSession = req.session.user.idToken;
+      req.session.destroy();
+      return {
+        idToken: idTokenFromSession,
+        logoutUrl: 'http://dev-3pna8x3yxt3xtnvr.us.auth0.com/v2/logout',
+      };
+    }
+    return;
+  }
+
+  @Get('/api/usuarios/logados')
+  getUsuarioLogado(@Req() req: any): any {
+    if (!req.session) {
+      return;
     }
 
-    return this.authService.token(user);
+    if (req.session.user) {
+      return req.session.user;
+    }
+
+    return;
   }
 }

@@ -1,9 +1,11 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { Presenca } from '../domain/presenca.entity';
 import { PresencaService } from '../services/presenca.service';
 import { Aluno } from '../domain/aluno.entity';
+import { Auth0Guard } from '../auth/auth0.guard';
 
 @Controller('/api/presencas')
+@UseGuards(Auth0Guard)
 export class PresencaController {
   constructor(private readonly presencaService: PresencaService) {}
 

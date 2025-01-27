@@ -5,12 +5,14 @@ import {
   Get,
   Param,
   Post,
-  Put,
+  Put, UseGuards,
 } from '@nestjs/common';
 import { AlunoService } from '../services/alunos.service';
 import { Aluno } from '../domain/aluno.entity';
+import { Auth0Guard } from '../auth/auth0.guard';
 
 @Controller('/api/alunos')
+@UseGuards(Auth0Guard)
 export class AlunoController {
   constructor(private readonly alunoService: AlunoService) {}
 
