@@ -14,6 +14,14 @@ export class PresencaService {
     return this.repository.save(presenca);
   }
 
+  async getAll(): Promise<Presenca[]> {
+    return this.repository.find();
+  }
+
+  async contByPalestra(id: number): Promise<number> {
+    return this.repository.countBy({ palestra: { id } });
+  }
+
   async getAllByPalestra(id: number): Promise<Aluno[]> {
     const presencas = await this.repository.find({
       where: { palestra: { id } },

@@ -19,6 +19,15 @@ export class AlunoService {
     return this.repository.findOneBy({ id });
   }
 
+  async getByMatricula(matricula: string): Promise<Aluno> {
+    Logger.log(`Buscando aluno por matricula: ${matricula}`);
+    return this.repository.findOneBy({ matricula });
+  }
+
+  async count(): Promise<number> {
+    return this.repository.count();
+  }
+
   async create(aluno: Aluno): Promise<Aluno> {
     Logger.log(`Criando aluno: ${aluno}`);
     return this.repository.save(aluno);

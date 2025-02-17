@@ -13,7 +13,6 @@ import { Palestra } from '../domain/palestra.entity';
 import { Auth0Guard } from '../auth/auth0.guard';
 
 @Controller('/api/palestras')
-@UseGuards(Auth0Guard)
 export class PalestraController {
   constructor(private readonly palestrasService: PalestrasService) {}
 
@@ -28,11 +27,13 @@ export class PalestraController {
   }
 
   @Post()
+  @UseGuards(Auth0Guard)
   createPalestra(@Body() palestra: Palestra): Promise<Palestra> {
     return this.palestrasService.createPalestras(palestra);
   }
 
   @Put(':id')
+  @UseGuards(Auth0Guard)
   updatePalestra(
     @Param('id') id: string,
     @Body() palestra: any,
@@ -41,6 +42,7 @@ export class PalestraController {
   }
 
   @Delete(':id')
+  @UseGuards(Auth0Guard)
   deletePalestra(@Param('id') id: string): Promise<void> {
     return this.palestrasService.deletePalestra(Number(id));
   }

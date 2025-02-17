@@ -9,7 +9,6 @@ import { PresencaService } from './app/services/presenca.service';
 import { LoginController } from './app/controllers/login.controller';
 import { Auth0Strategy } from './app/auth/auth0.strategy';
 import { PassportModule } from '@nestjs/passport';
-import { JwtModule } from '@nestjs/jwt';
 import { HttpModule } from '@nestjs/axios';
 
 @Module({
@@ -17,11 +16,6 @@ import { HttpModule } from '@nestjs/axios';
     DatabaseModule,
     HttpModule,
     PassportModule.register({ session: true }),
-    JwtModule.register({
-      global: true,
-      secret: 'tecwebSecret',
-      signOptions: { expiresIn: '5d' },
-    }),
   ],
   controllers: [
     PalestraController,
